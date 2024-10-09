@@ -1,1 +1,2 @@
-# android-pzpi-23-8-kozlov-serhii
+ПЗПІ-23-8
+Козлов Сергій
