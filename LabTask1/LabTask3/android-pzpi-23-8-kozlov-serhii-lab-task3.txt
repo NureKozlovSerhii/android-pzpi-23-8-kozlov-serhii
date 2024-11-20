@@ -1,0 +1,254 @@
+Харківський університет радіоелектроніки
+Факультет комп'ютерних наук
+Кафедра програмної інженерії
+
+
+
+
+
+
+
+ЗВІТ
+до лабораторної роботи 3 з дисципліни
+"Програмування під Android"
+на тему " алькулятор на 4 базові арифметичні операції " 
+
+
+
+
+
+Виконав ст. гр ПЗПІ-23-8
+Козлов Сергій Олександрович
+
+
+Перевірив 
+ст. викладач кафедри ПІ
+Сокорчук Ігор Петрович
+
+
+
+
+
+
+
+
+
+
+Харків 2024
+
+МЕТА
+     Метою цієї роботи є розробка калькулятора для Android-додатка, який підтримує виконання чотирьох базових арифметичних операцій: додавання, віднімання, множення та ділення. Додаток має забезпечувати введення аргументів через текстові поля, а вибір операцій — через відповідні кнопки.
+     Особливістю калькулятора є адаптивний інтерфейс, який змінюється залежно від орієнтації екрана: у портретному режимі кнопки розташовуються під текстовими полями, а в ландшафтному — праворуч. Також метою є освоєння роботи з елементами управління (Button, EditText, TextView), LinearLayout та управління адаптивністю інтерфейсу.
+     
+
+     ЗАВДАННЯ
+     Створити проєкт в Android Studio з шаблоном "Empty Activity". Основні елементи інтерфейсу включають два текстові поля для введення чисел, чотири кнопки для виконання операцій і текстове поле для відображення результату.
+     
+ХІД РОБОТИ
+	Спочатку було створено новий проєкт у Android Studio з шаблоном "Empty Activity". Основними файлами проєкту стали MainActivity.java, який містить основну логіку додатка, та activity_main.xml, у якому розташовується розмітка інтерфейсу. У файлі activity_main.xml використано LinearLayout як основний контейнер. Для портретної орієнтації компоненти розташовано вертикально: два поля вводу для чисел із підказками, чотири кнопки для виконання арифметичних операцій та поле для відображення результату.
+	Далі було реалізовано логіку виконання обчислень у методі calculate(). Цей метод отримує тип операції ("+", "-", "*", "/"), виконує обчислення на основі введених чисел і відображає результат у текстовому полі. Для кожної кнопки було встановлено обробник подій OnClickListener, який викликає метод calculate() із відповідною операцією.
+Робота програми перевірялася на емуляторі Android Studio. Було протестовано коректність виконання всіх арифметичних операцій, адаптивність інтерфейсу в різних орієнтаціях екрана, а також відображення повідомлень про помилки, наприклад, у випадку ділення на нуль.
+
+
+     ВИСНОВКИ
+     
+     Посилання на відео в You_Tube: https://www.youtube.com/watch?v=QGDPDhVNlHg
+     
+     У ході роботи було створено простий, але функціональний калькулятор для Android. Завдання дозволило ознайомитися з основами розробки адаптивних інтерфейсів для Android-додатків, навчитися працювати з базовими елементами управління (Button, EditText, TextView) і реалізовувати динамічну логіку роботи інтерфейсу. Отримані знання та навички значно спрощують створення інтерактивних і зручних для користувачів додатків.
+
+ВИКОРИСТАННІ ДЖЕРЕЛА
+
+1. YouTube. " Як Зробити Android Додаток з Нуля" https://www.youtube.com/watch?v=p0tmWQIKk4g. 
+2. Дата доступу: 7 жовтня 2024 року.
+3. Національний університет радіоелектроніки. https://dl.nure.ua/
+Дата доступу: 7 жовтня 2024 року.
+4. Спільнота Stack Overflow. https://stackoverflow.com/
+Дата доступу: 7 жовтня 2024 року.
+5. YouTube. “Уроки Java з нуля” 
+https://www.youtube.com/watch?v=iF7QpUA_KjE&list=PL7vq4D0vOpQbW4oply2GMQjVeYHNi05-I
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ДОДАТОК А
+
+MainActivity.java
+
+1.  package com.example.kozlov_serhii_pzpi_23_8;
+2. 
+3.  import android.os.Bundle;
+4.  import android.view.View;
+5.  import android.widget.Button;
+6.  import android.widget.EditText;
+7.  import android.widget.TextView;
+8.  import androidx.appcompat.app.AppCompatActivity;
+9.  
+10. public class MainActivity extends AppCompatActivity {
+11.     private EditText editTextNumber1, editTextNumber2;
+12.     private TextView textViewResult;
+13. 
+14.     @Override
+15.     protected void onCreate(Bundle savedInstanceState) {
+16.         super.onCreate(savedInstanceState);
+17.         setContentView(R.layout.activity_main);
+18. 
+19.         editTextNumber1 = findViewById(R.id.editTextNumber1);
+20.         editTextNumber2 = findViewById(R.id.editTextNumber2);
+21.         textViewResult = findViewById(R.id.textViewResult);
+22. 
+23.         Button buttonAdd = findViewById(R.id.buttonAdd);
+24.         Button buttonSubtract = findViewById(R.id.buttonSubtract);
+25.         Button buttonMultiply = findViewById(R.id.buttonMultiply);
+26.         Button buttonDivide = findViewById(R.id.buttonDivide);
+27. 
+28.         buttonAdd.setOnClickListener(v -> calculate("+"));
+29.         buttonSubtract.setOnClickListener(v -> calculate("-"));
+30.         buttonMultiply.setOnClickListener(v -> calculate("*"));
+31.         buttonDivide.setOnClickListener(v -> calculate("/"));
+32.     }
+33. 
+34.     private void calculate(String operation) {
+35.         String num1String = editTextNumber1.getText().toString();
+36.         String num2String = editTextNumber2.getText().toString();
+37. 
+38.         if (num1String.isEmpty() || num2String.isEmpty()) {
+39.             textViewResult.setText("Please enter both numbers");
+40.             return;
+41.         }
+42. 
+43.         double num1 = Double.parseDouble(num1String);
+44.         double num2 = Double.parseDouble(num2String);
+45.         double result = 0;
+46. 
+47.         switch (operation) {
+48.             case "+":
+49.                 result = num1 + num2;
+50.                 break;
+51.             case "-":
+52.                 result = num1 - num2;
+53.                 break;
+54.             case "*":
+55.                 result = num1 * num2;
+56.                 break;
+57.             case "/":
+58.                 if (num2 == 0) {
+59.                     textViewResult.setText("Cannot divide by zero");
+60.                     return;
+61.                 }
+62.                 result = num1 / num2;
+63.                 break;
+64.         }
+65.         textViewResult.setText("Result: " + result);
+66.     }
+67. }
+
+
+
+ДОДАТОК Б
+
+Activity_main.xml
+
+1.  <?xml version="1.0" encoding="utf-8"?>
+2 . <LinearLayout
+3 .    xmlns:android="http://schemas.android.com/apk/res/android"
+4 .    xmlns:app="http://schemas.android.com/apk/res-auto"
+5.      xmlns:tools="http://schemas.android.com/tools"
+6 .     android:layout_width="match_parent"
+7 .    android:layout_height="match_parent"
+8 .    android:orientation="vertical"
+9.      android:padding="16dp"
+10.     tools:context=".MainActivity">
+11. 
+12.     <EditText
+13.         android:id="@+id/editTextNumber1"
+14.         android:layout_width="match_parent"
+15.         android:layout_height="wrap_content"
+16.         android:hint="Enter first number"
+17.         android:inputType="numberDecimal"
+18.         android:layout_marginBottom="8dp"/>
+19. 
+20.     <EditText
+21.         android:id="@+id/editTextNumber2"
+22.         android:layout_width="match_parent"
+23.         android:layout_height="wrap_content"
+24.         android:hint="Enter second number"
+25.         android:inputType="numberDecimal"
+26.         android:layout_marginBottom="16dp"/>
+27. 
+28.     <LinearLayout
+29.         android:layout_width="match_parent"
+30.         android:layout_height="wrap_content"
+31.         android:orientation="horizontal"
+32.         android:gravity="center"
+33.         android:layout_marginBottom="16dp">
+34. 
+35.         <Button
+36.             android:id="@+id/buttonAdd"
+37.             android:layout_width="wrap_content"
+38.             android:layout_height="wrap_content"
+39.             android:text="+" />
+40. 
+41.         <Button
+42.             android:id="@+id/buttonSubtract"
+43.             android:layout_width="wrap_content"
+44.             android:layout_height="wrap_content"
+45.             android:text="-"
+46.             android:layout_marginStart="8dp" />
+47. 
+48.         <Button
+49.             android:id="@+id/buttonMultiply"
+50.             android:layout_width="wrap_content"
+51.             android:layout_height="wrap_content"
+52.             android:text="*"
+53.             android:layout_marginStart="8dp" />
+54. 
+55.         <Button
+56.             android:id="@+id/buttonDivide"
+57.             android:layout_width="wrap_content"
+58.             android:layout_height="wrap_content"
+59.             android:text="/"
+60.             android:layout_marginStart="8dp" />
+61.     </LinearLayout>
+62. 
+63.     <TextView
+64.         android:id="@+id/textViewResult"
+65.         android:layout_width="match_parent"
+66.         android:layout_height="wrap_content"
+67.         android:text="Result will appear here"
+68.         android:textSize="18sp"
+69.         android:gravity="center"
+70.         android:layout_marginTop="16dp" />
+71. </LinearLayout>
+
+
+
+
+
+
+
+
+
+2
+
+
