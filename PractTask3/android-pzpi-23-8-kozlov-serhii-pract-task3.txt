@@ -1,0 +1,451 @@
+Харківський університет радіоелектроніки
+Факультет комп'ютерних наук
+Кафедра програмної інженерії
+
+
+
+
+
+
+
+ЗВІТ
+до практичного заняття 3 з дисципліни
+"Програмування під Android"
+на тему "Діалогові панелі, обробник черг повідомлень та списки з прогортанням" 
+
+
+
+
+
+Виконав ст. гр ПЗПІ-23-8
+Козлов Сергій Олександрович
+
+
+Перевірив 
+ст. викладач кафедри ПІ
+Сокорчук Ігор Петрович
+
+
+
+
+
+
+
+
+
+Харків 2024
+
+МЕТА
+     Метою практичного заняття було засвоєння основних принципів створення та використання діалогових панелей, обробників повідомлень, а також списків із прогортанням у середовищі Android. У рамках роботи необхідно було навчитися створювати різні типи діалогів, зокрема AlertDialog, DatePickerDialog, TimePickerDialog та Custom Dialog. Також важливо було розібратися з концепцією черги повідомлень (Message Queue) і принципами використання Handler для забезпечення взаємодії між потоками в застосунку. Окрім цього, практичні завдання передбачали опанування роботи з RecyclerView, включно зі створенням адаптерів для динамічного відображення даних у списках.
+
+     ЗАВДАННЯ
+     Під час виконання завдань потрібно було створити кілька прикладів діалогових вікон, таких як AlertDialog, DatePickerDialog і TimePickerDialog, а також розробити кастомізований діалог із унікальним дизайном. Одним із ключових завдань було дослідити роботу черги повідомлень і навчитися використовувати Handler для передачі даних і синхронізації між різними потоками. Також важливим етапом було створення списків за допомогою RecyclerView, що включало написання адаптерів для динамічного відображення інформації залежно від вхідних даних. Усі завдання спрямовувалися на поглиблення розуміння принципів роботи з елементами інтерфейсу та взаємодії компонентів Android-застосунків.
+     
+ХІД РОБОТИ
+Під час виконання роботи спочатку було створено новий проект у середовищі розробки Android Studio, у якому налаштовано базову структуру з використанням основного Activity.
+Далі реалізовано кілька прикладів діалогових панелей. Зокрема, створено AlertDialog, який демонструє стандартний діалог із текстовим повідомленням та кнопками для взаємодії з користувачем. Також реалізовано DatePickerDialog для вибору дати, що дозволяє користувачеві вказати потрібний день, місяць і рік. Окрім того, створено Custom Dialog із кастомним дизайном, у якому додано текстове поле для введення даних. Для цього використано спеціальний XML-файл розмітки.
+Після цього було досліджено роботу черги повідомлень Message Queue у поєднанні з обробником Handler. У другому завданні створено механізм, що забезпечує виконання задачі в окремому потоці. Для передачі повідомлення з потоку в головний UI-потік використано Handler, який оновлює текст у текстовому полі після завершення задачі.
+Наступним етапом було створення списку з використанням RecyclerView. Було розроблено адаптер для динамічного відображення даних, згенеровано список елементів, кожен із яких має унікальний текст. Для зручності використання RecyclerView налаштовано LinearLayoutManager, що забезпечує вертикальне прокручування елементів.
+Уся робота виконувалась із метою закріплення знань про основи взаємодії з елементами інтерфейсу, створення діалогових панелей, роботу зі списками та синхронізацію потоків у середовищі Android.
+
+     ВИСНОВКИ
+     
+     Посилання на відео в You_Tube: https://youtu.be/rLby3nkP5JU
+     
+     У результаті виконання практичних занять вдалося засвоїти основні принципи роботи з діалоговими вікнами різних типів, розширити знання щодо використання обробників повідомлень для взаємодії між потоками та освоїти роботу зі списками в Android за допомогою RecyclerView. Ці навички дозволили краще зрозуміти, як організовується динамічний інтерфейс у мобільних застосунках, і закріпити знання про архітектуру Android. Виконані завдання допомогли поглибити практичний досвід роботи з елементами інтерфейсу, що сприятиме розробці більш ефективних і функціональних застосунків у майбутньому.
+
+ВИКОРИСТАННІ ДЖЕРЕЛА
+
+1. YouTube. " Як Зробити Android Додаток з Нуля" https://www.youtube.com/watch?v=p0tmWQIKk4g. 
+2. Дата доступу: 7 жовтня 2024 року.
+3. Національний університет радіоелектроніки. https://dl.nure.ua/
+Дата доступу: 7 жовтня 2024 року.
+4. Спільнота Stack Overflow. https://stackoverflow.com/
+Дата доступу: 7 жовтня 2024 року.
+5. YouTube. “Уроки Java з нуля” 
+https://www.youtube.com/watch?v=iF7QpUA_KjE&list=PL7vq4D0vOpQbW4oply2GMQjVeYHNi05-I
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ДОДАТОК А
+
+MainActivity.java
+
+1. public class MainActivity extends AppCompatActivity {
+
+2.     @Override
+3.     protected void onCreate(Bundle savedInstanceState) {
+4.         super.onCreate(savedInstanceState);
+5.         setContentView(R.layout.activity_main);
+
+6.         Button showDialogButton = findViewById(R.id.showDialogButton);
+7.         Button showDatePickerButton = findViewById(R.id.showDatePickerButton);
+8.         Button showCustomDialogButton = findViewById(R.id.showCustomDialogButton);
+
+9.         Button goToNewPageButton = findViewById(R.id.goToNewPageButton);
+
+10.        Button goToTask3 = findViewById(R.id.goToTask3);
+
+11.        goToTask3.setOnClickListener(v -> {
+12.            Intent intent = new Intent(MainActivity.this, ThirdActivity.class);
+13.            startActivity(intent);
+14.        });
+
+15.        goToNewPageButton.setOnClickListener(v -> {
+16.            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+17.            startActivity(intent);
+18.        });
+
+19.       
+20.        showDialogButton.setOnClickListener(v -> {
+21.            new AlertDialog.Builder(MainActivity.this)
+22.                    .setTitle("Alert Dialog")
+23.                    .setMessage("This is an example of AlertDialog.")
+24.                    .setPositiveButton("OK", (dialog, which) ->
+25.                            Toast.makeText(MainActivity.this, "OK clicked", Toast.LENGTH_SHORT).show())
+26.                    .setNegativeButton("Cancel", (dialog, which) ->
+27.                            Toast.makeText(MainActivity.this, "Cancel clicked", Toast.LENGTH_SHORT).show())
+28.                    .show();
+29.        });
+
+30.       
+31.        showDatePickerButton.setOnClickListener(v -> {
+32.            Calendar calendar = Calendar.getInstance();
+33.            int year = calendar.get(Calendar.YEAR);
+34.            int month = calendar.get(Calendar.MONTH);
+35.            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+36.            DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
+37.                    (view, selectedYear, selectedMonth, selectedDay) ->
+38.                            Toast.makeText(MainActivity.this,
+39.                                    "Selected date: " + selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear,
+40.                                    Toast.LENGTH_SHORT).show(),
+41.                    year, month, day);
+
+42.            datePickerDialog.show();
+43.        });
+
+44.        
+45.        showCustomDialogButton.setOnClickListener(v -> {
+46.            LayoutInflater inflater = getLayoutInflater();
+47.            View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+
+48.            EditText inputField = dialogView.findViewById(R.id.customDialogInput);
+
+49.            new AlertDialog.Builder(MainActivity.this)
+50.                    .setView(dialogView)
+51.                    .setPositiveButton("OK", (dialog, id) ->
+52.                            Toast.makeText(MainActivity.this,
+53.                                    "Input: " + inputField.getText().toString(),
+54.                                    Toast.LENGTH_SHORT).show())
+55.                    .setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss())
+56.                    .create()
+57.                    .show();
+58.        });
+59.    }
+60. }
+
+
+ДОДАТОК Б
+
+SecondActivity.java
+
+1. public class SecondActivity extends AppCompatActivity {
+
+2.     private Handler handler;
+3.     private TextView textView;
+
+4.     @Override
+5.     protected void onCreate(Bundle savedInstanceState) {
+6.         super.onCreate(savedInstanceState);
+7.         setContentView(R.layout.activity_second);
+
+8.         textView = findViewById(R.id.textViewMessage);
+9.         Button buttonStart = findViewById(R.id.buttonStartTask);
+
+10.        
+11.        handler = new Handler(Looper.getMainLooper()) {
+12.            @Override
+13.            public void handleMessage(Message msg) {
+14.                if (msg.what == 1) {
+15.                    textView.setText("Task completed in background!");
+16.                }
+17.            }
+18.        };
+
+19.        buttonStart.setOnClickListener(v -> startBackgroundTask());
+20.    }
+
+21.    private void startBackgroundTask() {
+22.       
+23.        new Thread(() -> {
+24.            try {
+25
+26.                Thread.sleep(3000);
+27.            } catch (InterruptedException e) {
+28.                e.printStackTrace();
+29.            }
+
+30.            /
+31.            Message message = handler.obtainMessage();
+32.            message.what = 1; // Код повідомлення
+33.            handler.sendMessage(message);
+34.        }).start();
+
+35.        textView.setText("Task started...");
+36.    }
+37. }
+
+ДОДАТОК В
+
+ThirdActivity.java
+
+1. public class ThirdActivity extends AppCompatActivity {
+
+2.     @Override
+3.     protected void onCreate(Bundle savedInstanceState) {
+4.         super.onCreate(savedInstanceState);
+5.         setContentView(R.layout.activity_third);
+
+6.         
+7.         RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
+8.         
+9.         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+10.        
+11.        List<String> items = new ArrayList<>();
+12.        for (int i = 1; i <= 20; i++) {
+13.            items.add("Item " + i);
+14.        }
+
+15.        
+16.        MyAdapter adapter = new MyAdapter(items);
+17.        recyclerView.setAdapter(adapter);
+18.    }
+19. }
+
+
+
+ДОДАТОК Д
+
+Class MyAdapter
+
+1. package com.example.serhii_kozlov_pzpi_23_8;
+
+2. import android.view.LayoutInflater;
+3. import android.view.View;
+4. import android.view.ViewGroup;
+5. import android.widget.TextView;
+6. import androidx.annotation.NonNull;
+7. import androidx.recyclerview.widget.RecyclerView;
+
+8. import java.util.List;
+
+9. public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+10.    private final List<String> mDataset;
+
+11.    
+12.    public MyAdapter(List<String> dataset) {
+13.        mDataset = dataset;
+14.    }
+
+15.    
+16.    @NonNull
+17.    @Override
+18.    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+19.        View view = LayoutInflater.from(parent.getContext())
+20.                .inflate(R.layout.item_view, parent, false);
+21.        return new MyViewHolder(view);
+22.    }
+
+23.    
+24.    @Override
+25.    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+26.        holder.textView.setText(mDataset.get(position));
+27.    }
+
+28.    
+29.    @Override
+30.    public int getItemCount() {
+31.        return mDataset.size();
+32.    }
+
+33.    
+34.    public static class MyViewHolder extends RecyclerView.ViewHolder {
+35.        public final TextView textView;
+
+36.        public MyViewHolder(View view) {
+37.            super(view);
+38.            textView = view.findViewById(R.id.itemText);
+39.        }
+40.    }
+41. }
+     
+     
+
+ДОДАТОК Е
+
+Розмітка activity_main.xml
+
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <LinearLayout
+3.     xmlns:android="http://schemas.android.com/apk/res/android"
+4.     android:layout_width="match_parent"
+5.     android:layout_height="match_parent"
+6.     android:orientation="vertical"
+7.     android:gravity="center"
+8.     android:padding="16dp">
+
+9.     <Button
+10.         android:id="@+id/showDialogButton"
+11.         android:layout_width="wrap_content"
+12.         android:layout_height="wrap_content"
+13.         android:text="Show AlertDialog" />
+
+14.     <Button
+15.         android:id="@+id/showDatePickerButton"
+16.         android:layout_width="wrap_content"
+17.         android:layout_height="wrap_content"
+18.         android:text="Show DatePickerDialog"
+19.         android:layout_marginTop="16dp" />
+
+20.     <Button
+21.         android:id="@+id/showCustomDialogButton"
+22.         android:layout_width="wrap_content"
+23.         android:layout_height="wrap_content"
+24.         android:text="Show Custom Dialog"
+25.         android:layout_marginTop="16dp" />
+
+26.     <Button
+27.         android:id="@+id/goToNewPageButton"
+28.         android:layout_width="wrap_content"
+29.         android:layout_height="wrap_content"
+30.         android:text="Go to Task 2"
+31.         android:layout_marginTop="16dp" />
+
+32.     <Button
+33.         android:id="@+id/goToTask3"
+34.         android:layout_width="wrap_content"
+35.         android:layout_height="wrap_content"
+36.         android:text="Go to Task 3"
+37.         android:layout_marginTop="16dp" />
+38. </LinearLayout>
+
+custom_dialog.xml
+
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <LinearLayout
+3.     xmlns:android="http://schemas.android.com/apk/res/android"
+4.     android:layout_width="wrap_content"
+5.     android:layout_height="wrap_content"
+6.     android:orientation="vertical"
+7.     android:padding="16dp">
+
+8.     <TextView
+9.         android:id="@+id/customDialogText"
+10.         android:layout_width="wrap_content"
+11.         android:layout_height="wrap_content"
+12.         android:text="This is a custom dialog" />
+
+13.     <EditText
+14.         android:id="@+id/customDialogInput"
+15.         android:layout_width="match_parent"
+16.         android:layout_height="wrap_content"
+17.         android:hint="Enter some text" />
+18. </LinearLayout>
+     
+ДОДАТОК Ж
+
+Розмітка activity_second.xml
+
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <LinearLayout
+3.     xmlns:android="http://schemas.android.com/apk/res/android"
+4.     android:layout_width="match_parent"
+5.     android:layout_height="match_parent"
+6.     android:orientation="vertical"
+7.     android:padding="16dp">
+
+8.     <TextView
+9.         android:id="@+id/textViewMessage"
+10.         android:layout_width="wrap_content"
+11.         android:layout_height="wrap_content"
+12.         android:text="Press the button to start the task"
+13.         android:textSize="18sp"
+14.         android:layout_marginBottom="20dp" />
+
+15.     <Button
+16.         android:id="@+id/buttonStartTask"
+17.         android:layout_width="wrap_content"
+18.         android:layout_height="wrap_content"
+19.         android:text="Start Task" />
+20. </LinearLayout>
+     
+ДОДАТОК З
+
+Розмітка activity_third.xml
+
+     1. <?xml version="1.0" encoding="utf-8"?>
+     2. <LinearLayout
+     3.     xmlns:android="http://schemas.android.com/apk/res/android"
+     4.     android:layout_width="match_parent"
+     5.     android:layout_height="match_parent"
+     6.     android:orientation="vertical">
+     
+     7.     <TextView
+     8.         android:id="@+id/headerText"
+     9.         android:layout_width="match_parent"
+     10.         android:layout_height="wrap_content"
+     11.         android:text="RecyclerView Example"
+     12.         android:textSize="20sp"
+     13.         android:textStyle="bold"
+     14.         android:gravity="center"
+     15.         android:padding="16dp"/>
+     
+     16.     <androidx.recyclerview.widget.RecyclerView
+     17.         android:id="@+id/recyclerView"
+     18.         android:layout_width="match_parent"
+     19.         android:layout_height="match_parent"
+     20.         android:padding="8dp"/>
+     21. </LinearLayout>
+     
+     item_view.xml
+     
+     1. <?xml version="1.0" encoding="utf-8"?>
+     2. <LinearLayout
+     3.     xmlns:android="http://schemas.android.com/apk/res/android"
+     4.     android:layout_width="match_parent"
+     5.     android:layout_height="wrap_content"
+     6.     android:orientation="vertical"
+     7.     android:padding="8dp">
+     
+     8.     <TextView
+     9.         android:id="@+id/itemText"
+     10.         android:layout_width="match_parent"
+     11.         android:layout_height="wrap_content"
+     12.         android:text="Item Text"
+     13.         android:textSize="16sp"/>
+     14. </LinearLayout>
