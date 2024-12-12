@@ -1,0 +1,353 @@
+Харківський університет радіоелектроніки
+Факультет комп'ютерних наук
+Кафедра програмної інженерії
+
+
+
+
+
+
+
+ЗВІТ
+до практичного заняття 3 з дисципліни
+"Програмування під Android"
+на тему "Сховища даних (Preferences, база даних SQLite, файли)" 
+
+
+
+
+
+Виконав ст. гр ПЗПІ-23-8
+Козлов Сергій Олександрович
+
+
+Перевірив 
+ст. викладач кафедри ПІ
+Сокорчук Ігор Петрович
+
+
+
+
+
+
+
+
+
+Харків 2024
+
+МЕТА
+	Метою практичного заняття було ознайомлення з основними способами збереження даних у середовищі Android, зокрема використання SharedPreferences, бази даних SQLite та роботи з файлами. Завдання полягало в реалізації збереження та отримання даних для кожного з методів, а також дослідження їх застосування у реальних проєктах.
+
+     ЗАВДАННЯ
+     На практичному занятті необхідно було реалізувати функціонал для роботи з різними типами сховищ даних у середовищі Android. Передбачалося ознайомлення та практична реалізація збереження інформації через SharedPreferences, базу даних SQLite та файлову систему. Завдання включало збереження імені та віку користувача за допомогою SharedPreferences з можливістю автоматичного їх зчитування після перезапуску застосунку. Також потрібно було створити базу даних SQLite для зберігання інформації про користувачів, забезпечити додавання нових записів та відображення списку даних на екрані. Крім того, вимагалося реалізувати запис текстових даних у файл із подальшим їх зчитуванням і відображенням на екрані застосунку. Завдання були спрямовані на освоєння роботи з різними типами сховищ у реальних умовах розробки.
+     
+ХІД РОБОТИ
+	Робота над практичним завданням розпочалася зі створення нового проєкту в Android Studio. Було підготовлено графічний інтерфейс, який містив поля введення для імені, віку та текстових даних, кнопки для взаємодії з різними типами сховищ, а також область для відображення збереженої інформації.
+Спершу було реалізовано роботу з SharedPreferences для збереження та зчитування налаштувань користувача. Було створено об’єкт SharedPreferences, до якого через методи putString і getString записувалися та зчитувалися дані про ім’я та вік користувача. Збереження відбувалося при натисканні відповідної кнопки, а після перезапуску застосунку дані автоматично відображалися.
+Далі було створено локальну базу даних SQLite за допомогою класу, що наслідував SQLiteOpenHelper. У цьому класі визначено структуру таблиці для збереження інформації про користувачів. Було реалізовано функціонал додавання нових записів через методи insert та зчитування даних через query. У додатку передбачена форма введення для додавання нового користувача, а всі збережені записи відображалися у вигляді списку.
+На завершення було реалізовано функціонал роботи з файлами. Для запису текстових даних у внутрішню пам’ять використовувався клас FileOutputStream, а для їх зчитування – FileInputStream. Текст, введений у відповідне поле, записувався у файл, а потім зчитувався та відображався на екрані після натискання відповідних кнопок.
+Після завершення розробки функціонал було протестовано на емуляторі Android Studio. Усі методи збереження даних працювали коректно, забезпечуючи взаємодію із SharedPreferences, базою даних SQLite та файлами.
+
+
+     ВИСНОВКИ
+     
+     Посилання на відео в You_Tube: https://youtu.be/_70h5I6lN7U
+     
+     У ході виконання практичного завдання було реалізовано три способи збереження даних у середовищі Android: SharedPreferences, SQLite та файлову систему. Робота з SharedPreferences виявилася найпростішою для збереження невеликих обсягів даних, таких як налаштування або особисті дані користувача. SQLite продемонструвала свою ефективність для роботи зі структурованими даними, що потребують організації у вигляді таблиць і подальшої обробки. Робота з файлами дозволила зрозуміти, як зберігати та зчитувати необроблені текстові дані у внутрішній пам’яті застосунку.
+     Це практичне заняття допомогло закріпити навички роботи з різними типами сховищ даних і підготувало до застосування цих методів у реальних проєктах. Кожен із розглянутих підходів має свої особливості та сферу застосування, що важливо враховувати при розробці Android-застосунків.
+     
+     
+     
+
+ВИКОРИСТАННІ ДЖЕРЕЛА
+
+1. YouTube. " Як Зробити Android Додаток з Нуля" https://www.youtube.com/watch?v=p0tmWQIKk4g. 
+2. Дата доступу: 7 жовтня 2024 року.
+3. Національний університет радіоелектроніки. https://dl.nure.ua/
+Дата доступу: 7 жовтня 2024 року.
+4. Спільнота Stack Overflow. https://stackoverflow.com/
+Дата доступу: 7 жовтня 2024 року.
+5. YouTube. “Уроки Java з нуля” 
+https://www.youtube.com/watch?v=iF7QpUA_KjE&list=PL7vq4D0vOpQbW4oply2GMQjVeYHNi05-I
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ДОДАТОК А
+
+MainActivity.java
+
+1. package com.example.serhii_kozlov_pzpi_23_8;
+2. 
+3. import android.content.ContentValues;
+4. import android.content.Context;
+5. import android.content.SharedPreferences;
+6. import android.database.Cursor;
+7. import android.database.sqlite.SQLiteDatabase;
+8. import android.database.sqlite.SQLiteOpenHelper;
+9. import android.os.Bundle;
+10. import android.view.View;
+11. import android.widget.Button;
+12. import android.widget.EditText;
+13. import android.widget.TextView;
+14. import android.widget.Toast;
+15. 
+16. import androidx.appcompat.app.AppCompatActivity;
+17. 
+18. import java.io.FileInputStream;
+19. import java.io.FileOutputStream;
+20. 
+21. public class MainActivity extends AppCompatActivity {
+22. 
+23.     private EditText editTextName, editTextAge, editTextFile;
+24.     private TextView textViewData;
+25.     private SharedPreferences sharedPreferences;
+26.     private SQLiteDatabase database;
+27. 
+28.     @Override
+29.     protected void onCreate(Bundle savedInstanceState) {
+30.         super.onCreate(savedInstanceState);
+31.         setContentView(R.layout.activity_main);
+32. 
+33.         editTextName = findViewById(R.id.editTextName);
+34.         editTextAge = findViewById(R.id.editTextAge);
+35.         editTextFile = findViewById(R.id.editTextFile);
+36.         textViewData = findViewById(R.id.textViewData);
+37. 
+38.         Button buttonSavePrefs = findViewById(R.id.buttonSavePrefs);
+39.         Button buttonLoadPrefs = findViewById(R.id.buttonLoadPrefs);
+40.         Button buttonSaveDB = findViewById(R.id.buttonSaveDB);
+41.         Button buttonLoadDB = findViewById(R.id.buttonLoadDB);
+42.         Button buttonSaveFile = findViewById(R.id.buttonSaveFile);
+43.         Button buttonLoadFile = findViewById(R.id.buttonLoadFile);
+44. 
+45.         // SharedPreferences
+46.         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+47. 
+48.         // SQLite
+49.         DBHelper dbHelper = new DBHelper(this);
+50.         database = dbHelper.getWritableDatabase();
+51. 
+52.         buttonSavePrefs.setOnClickListener(view -> saveToSharedPreferences());
+53.         buttonLoadPrefs.setOnClickListener(view -> loadFromSharedPreferences());
+54.         buttonSaveDB.setOnClickListener(view -> saveToDatabase());
+55.         buttonLoadDB.setOnClickListener(view -> loadFromDatabase());
+56.         buttonSaveFile.setOnClickListener(view -> saveToFile());
+57.         buttonLoadFile.setOnClickListener(view -> loadFromFile());
+58.     }
+59. 
+60.     private void saveToSharedPreferences() {
+61.         String name = editTextName.getText().toString();
+62.         String age = editTextAge.getText().toString();
+63. 
+64.         SharedPreferences.Editor editor = sharedPreferences.edit();
+65.         editor.putString("name", name);
+66.         editor.putString("age", age);
+67.         editor.apply();
+68. 
+69.         Toast.makeText(this, "Saved to SharedPreferences", Toast.LENGTH_SHORT).show();
+70.     }
+71. 
+72.     private void loadFromSharedPreferences() {
+73.         String name = sharedPreferences.getString("name", "No Name");
+74.         String age = sharedPreferences.getString("age", "No Age");
+75. 
+76.         textViewData.setText("Name: " + name + "\nAge: " + age);
+77.     }
+78. 
+79.     private void saveToDatabase() {
+80.         String name = editTextName.getText().toString();
+81.         String ageStr = editTextAge.getText().toString();
+82. 
+83.         if (name.isEmpty() || ageStr.isEmpty()) {
+84.             Toast.makeText(this, "Please enter both name and age", Toast.LENGTH_SHORT).show();
+85.             return;
+86.         }
+87. 
+88.         int age = Integer.parseInt(ageStr);
+89. 
+90.         ContentValues values = new ContentValues();
+91.         values.put("name", name);
+92.         values.put("age", age);
+93. 
+94.         long rowId = database.insert("users", null, values);
+95. 
+96.         if (rowId != -1) {
+97.             Toast.makeText(this, "Saved to SQLite", Toast.LENGTH_SHORT).show();
+98.         } else {
+99.             Toast.makeText(this, "Error saving to SQLite", Toast.LENGTH_SHORT).show();
+100.         }
+101.     }
+102. 
+103.     private void loadFromDatabase() {
+104.         Cursor cursor = database.query("users", null, null, null, null, null, null);
+105. 
+106.         StringBuilder data = new StringBuilder();
+107.         while (cursor.moveToNext()) {
+108.             int nameIndex = cursor.getColumnIndex("name");
+109.             int ageIndex = cursor.getColumnIndex("age");
+110. 
+111.             if (nameIndex != -1 && ageIndex != -1) {
+112.                 String name = cursor.getString(nameIndex);
+113.                 int age = cursor.getInt(ageIndex);
+114.                 data.append("Name: ").append(name).append(", Age: ").append(age).append("\n");
+115.             }
+116.         }
+117.         cursor.close();
+118. 
+119.         if (data.length() > 0) {
+120.             textViewData.setText(data.toString());
+121.         } else {
+122.             textViewData.setText("No data found in SQLite");
+123.         }
+124.     }
+125. 
+126.     private void saveToFile() {
+127.         String data = editTextFile.getText().toString();
+128.         try {
+129.             FileOutputStream fos = openFileOutput("user_data.txt", Context.MODE_PRIVATE);
+130.             fos.write(data.getBytes());
+131.             fos.close();
+132.             Toast.makeText(this, "Saved to File", Toast.LENGTH_SHORT).show();
+133.         } catch (Exception e) {
+134.             Toast.makeText(this, "Error saving to File", Toast.LENGTH_SHORT).show();
+135.         }
+136.     }
+137. 
+138.     private void loadFromFile() {
+139.         try {
+140.             FileInputStream fis = openFileInput("user_data.txt");
+141.             int c;
+142.             StringBuilder temp = new StringBuilder();
+143.             while ((c = fis.read()) != -1) {
+144.                 temp.append((char) c);
+145.             }
+146.             fis.close();
+147. 
+148.             textViewData.setText(temp.toString());
+149.         } catch (Exception e) {
+150.             Toast.makeText(this, "Error loading from File", Toast.LENGTH_SHORT).show();
+151.         }
+152.     }
+153. 
+154.     static class DBHelper extends SQLiteOpenHelper {
+155. 
+156.         private static final String DB_NAME = "MyDB";
+157.         private static final int DB_VERSION = 1;
+158. 
+159.         public DBHelper(Context context) {
+160.             super(context, DB_NAME, null, DB_VERSION);
+161.         }
+162. 
+163.         @Override
+164.         public void onCreate(SQLiteDatabase db) {
+165.             db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER)");
+166.         }
+167. 
+168.         @Override
+169.         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+170.             db.execSQL("DROP TABLE IF EXISTS users");
+171.             onCreate(db);
+172.         }
+173.     }
+174. }
+
+
+ДОДАТОК Б
+
+activity_main.xml
+
+1. <LinearLayout
+2.     xmlns:android="http://schemas.android.com/apk/res/android"
+3.     android:layout_width="match_parent"
+4.     android:layout_height="match_parent"
+5.     android:orientation="vertical"
+6.     android:padding="16dp">
+7. 
+8.     <EditText
+9.         android:id="@+id/editTextName"
+10.        android:layout_width="match_parent"
+11.        android:layout_height="wrap_content"
+12.        android:hint="Enter Name" />
+13. 
+14.    <EditText
+15.        android:id="@+id/editTextAge"
+16.        android:layout_width="match_parent"
+17.        android:layout_height="wrap_content"
+18.        android:hint="Enter Age"
+19.        android:inputType="number" />
+20. 
+21.    <Button
+22.        android:id="@+id/buttonSavePrefs"
+23.        android:layout_width="match_parent"
+24.        android:layout_height="wrap_content"
+25.        android:text="Save to SharedPreferences" />
+26. 
+27.    <Button
+28.        android:id="@+id/buttonLoadPrefs"
+29.        android:layout_width="match_parent"
+30.        android:layout_height="wrap_content"
+31.        android:text="Load from SharedPreferences" />
+32. 
+33.    <Button
+34.        android:id="@+id/buttonSaveDB"
+35.        android:layout_width="match_parent"
+36.        android:layout_height="wrap_content"
+37.        android:text="Save to SQLite" />
+38. 
+39.    <Button
+40.        android:id="@+id/buttonLoadDB"
+41.        android:layout_width="match_parent"
+42.        android:layout_height="wrap_content"
+43.        android:text="Load from SQLite" />
+44. 
+45.    <EditText
+46.        android:id="@+id/editTextFile"
+47.        android:layout_width="match_parent"
+48.        android:layout_height="wrap_content"
+49.        android:hint="Enter Text to Save to File" />
+50. 
+51.    <Button
+52.        android:id="@+id/buttonSaveFile"
+53.        android:layout_width="match_parent"
+54.        android:layout_height="wrap_content"
+55.        android:text="Save to File" />
+56. 
+57.    <Button
+58.        android:id="@+id/buttonLoadFile"
+59.        android:layout_width="match_parent"
+60.        android:layout_height="wrap_content"
+61.        android:text="Load from File" />
+62. 
+63.    <TextView
+64.        android:id="@+id/textViewData"
+65.        android:layout_width="match_parent"
+66.        android:layout_height="wrap_content"
+67.        android:text="Data will appear here"
+68.        android:textSize="16sp"
+69.        android:paddingTop="16dp" />
+70. 
+71. </LinearLayout>
+
+     
